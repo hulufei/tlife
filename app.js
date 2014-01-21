@@ -117,7 +117,7 @@ app.get('/signout', function(req, res) {
   res.redirect('/signin');
 });
 
-app.post('/tasks',
+app.post('/api/tasks',
   function(req, res, next) {
     if (req.isAuthenticated()) { return next(null); }
     res.send(401);

@@ -102,10 +102,10 @@ describe('App', function() {
       });
     });
 
-    describe('/tasks', function() {
+    describe('/api/tasks', function() {
       it('should require authorize to upload', function(done) {
         request(app)
-          .post('/tasks')
+          .post('/api/tasks')
           .expect(401, done);
       });
     });
@@ -129,7 +129,7 @@ describe('App', function() {
 
     it('should save the task file to db', function(done) {
       agent
-        .post('/tasks')
+        .post('/api/tasks')
         .attach('t', __dirname + '/tasks/basic.t')
         .expect(200)
         .end(function(err) {
@@ -151,7 +151,7 @@ describe('App', function() {
 
     it.skip('should ignore empty task file', function(done) {
       agent
-        .post('/tasks')
+        .post('/api/tasks')
         .attach('t', __dirname + '/tasks/empty.t')
         .expect(500)
         .end(function(err) {
@@ -165,7 +165,7 @@ describe('App', function() {
 
     it.skip('should limit uploaded task file size under 2kb', function(done) {
       agent
-        .post('/tasks')
+        .post('/api/tasks')
         .attach('t', __dirname + '/tasks/limit-size.t')
         .expect(500)
         .end(function(err) {
