@@ -116,7 +116,7 @@ describe('App', function() {
     var agent = request.agent(app);
 
     before(register(user));
-    before(login(agent, user));
+    // before(login(agent, user));
 
     afterEach(function(done) {
       // clear db
@@ -130,6 +130,8 @@ describe('App', function() {
     it('should save the task file to db', function(done) {
       agent
         .post('/api/tasks')
+        .field('email', user.email)
+        .field('password', user.password)
         .attach('t', __dirname + '/tasks/basic.t')
         .expect(200)
         .end(function(err) {

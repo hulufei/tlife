@@ -16,6 +16,12 @@
   },
   "devDependencies": {
     "supertest": "~0.8.3",
-    "should": "latest"
+    "should": "latest",
+    "connect-mongo": "~0.4.0",
+    "express-flash": "0.0.2",
+    "express-validator": "~1.0.1",
+    "lodash": "~2.4.1",
+    "bcrypt-nodejs": "0.0.3",
+    "connect-assets": "~2.5.4"
   }
 }
