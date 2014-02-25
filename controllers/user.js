@@ -109,6 +109,50 @@ exports.postSignup = function(req, res, next) {
 };
 
 /**
+ * POST /auth/token
+ * Return a token to the authorized client(t), if the user doesn't exist,
+ * register one
+ *
+ */
+exports.getAuthToken = function(req, res, next) {
+  req.assert('email', 'Email is not valid').isEmail();
+  req.assert('password', 'Password must be at least 4 characters long').len(4);
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    return res.send(500, { message: errors });
+  }
+
+  // Auth
+  passport.authenticate('local', function(err, user) {
+    if (err) return next(err);
+
+    if (!user) {
+      // Try to register user
+      var _user = new User({
+        email: req.body.email,
+        password: req.body.password
+      });
+      _user.save(function(err) {
+        if (err) {
+          if (err.code === 11000) {
+            return res.send(401, { message: 'Password incorrect!' });
+          }
+          return next(err);
+        }
+        // Use ObjectId as token, id generated before save
+        res.send(200, { token: _user.id });
+      });
+    }
+    else {
+      // Authencated, use ObjectId as token, id fetched from server
+      res.send(200, { token: user._id });
+    }
+  })(req, res, next);
+};
+
+/**
  * GET /account
  * Profile page.
  */

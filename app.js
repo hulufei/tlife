@@ -70,10 +70,10 @@ app.use(expressValidator());
 app.use(express.cookieParser());
 app.use(express.session({
   secret: config.sessionSecret,
-  store: new MongoStore({
-    db: mongoose.connection.db,
-    auto_reconnect: true
-  })
+  // store: new MongoStore({
+  //   db: mongoose.connection.db,
+  //   auto_reconnect: true
+  // })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -102,6 +102,8 @@ app.get('/account', passportConf.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
+
+app.post('/auth/token', userController.getAuthToken);
 
 app.post('/api/tasks',
   // passport.authenticate('local', { session: false }),
