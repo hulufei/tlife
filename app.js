@@ -32,18 +32,14 @@ var config = require('./config/secrets')[app.get('env')];
 var passportConf = require('./config/passport');
 
 // Bootstrap db connection
-mongoose.connect(config.db);
+mongoose.connect(config.url);
 mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
 
 // Bootstrap models
-var modelsPath = __dirname + '/models';
-fs.readdirSync(modelsPath).forEach(function(file) {
-	require(modelsPath + '/' + file);
-});
-var Task = mongoose.model('Task');
-var User = mongoose.model('User');
+var Task = require('./models/Task');
+var User = require('./models/User');
 
 // Express configuration.
 var hour = 3600000;
@@ -66,14 +62,14 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(expressValidator());
-// app.use(express.multipart());
+// app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({
   secret: config.sessionSecret,
-  // store: new MongoStore({
-  //   db: mongoose.connection.db,
-  //   auto_reconnect: true
-  // })
+  store: new MongoStore({
+    url: config.url,
+    auto_reconnect: true
+  })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -105,40 +101,7 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 
 app.post('/auth/token', userController.getAuthToken);
 
-app.post('/api/tasks',
-  // passport.authenticate('local', { session: false }),
-  function(req, res, next) {
-    console.log(req.body.email);
-    console.log(req.body.password);
-    // Remove multipart middleware to handle upload files
-    // @see http://goo.gl/LC21f9
-    if (req.user && req.is('multipart/form-data')) {
-      var form = new multiparty.Form();
-      form.parse(req);
-
-      form.on('error', next);
-
-      form.on('part', function(part) {
-        // part is a readable stream
-        var t = new T(part);
-        t.parser.on('end', function(err) {
-          if (err) return next(err);
-
-          t.collections.forEach(function(c) { c.user = req.user; });
-
-          Task.create(t.collections, function(err) {
-            if (err) return next(err);
-
-            res.send(200);
-          });
-        });
-      });
-    }
-    else {
-      next();
-    }
-  }
-);
+app.post('/api/tasks', passportConf.isAuthenticated, taskController.postTask);
 
 
 // Start Express Server

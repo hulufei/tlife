@@ -26,6 +26,19 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
 }));
 
 exports.isAuthenticated = function(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.redirect('/login');
+  var token = req.get('x-auth-token');
+  if (token) {
+    // Authenticated by token
+    User.findById(token, function(err, user) {
+      if (err) return res.send(401);
+      req.user = user;
+      next();
+    });
+  }
+  else if (req.isAuthenticated()) {
+    next();
+  }
+  else {
+    res.redirect('/login');
+  }
 };

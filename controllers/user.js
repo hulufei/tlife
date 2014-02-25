@@ -111,7 +111,7 @@ exports.postSignup = function(req, res, next) {
 /**
  * POST /auth/token
  * Return a token to the authorized client(t), if the user doesn't exist,
- * register one
+ * register a new user
  *
  */
 exports.getAuthToken = function(req, res, next) {

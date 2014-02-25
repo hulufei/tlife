@@ -5,11 +5,13 @@ var Task = require('../models/Task');
 exports.postTask = function(req, res, next) {
   // Remove multipart middleware to handle upload files
   // @see http://goo.gl/LC21f9
-  if (req.user && req.is('multipart/form-data')) {
+  if (req.is('multipart/form-data')) {
     var form = new multiparty.Form();
     form.parse(req);
 
-    form.on('error', next);
+    form.on('error', function() {
+      res.send(500, { message: 'Invalid tasks!' });
+    });
 
     form.on('part', function(part) {
       // part is a readable stream
@@ -28,6 +30,6 @@ exports.postTask = function(req, res, next) {
     });
   }
   else {
-    next();
+    res.send(500, { message: 'Invalid tasks!' });
   }
 };
