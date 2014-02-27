@@ -26,6 +26,11 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
 }));
 
 exports.isAuthenticated = function(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect('/login');
+};
+
+exports.isAuthorized = function(req, res, next) {
   var token = req.get('x-auth-token');
   if (token) {
     // Authenticated by token
@@ -35,10 +40,8 @@ exports.isAuthenticated = function(req, res, next) {
       next();
     });
   }
-  else if (req.isAuthenticated()) {
-    next();
-  }
   else {
-    res.redirect('/login');
+    res.send(401);
   }
 };
+

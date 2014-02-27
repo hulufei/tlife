@@ -101,7 +101,7 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 
 app.post('/auth/token', userController.getAuthToken);
 
-app.post('/api/tasks', passportConf.isAuthenticated, taskController.postTask);
+app.post('/api/tasks', passportConf.isAuthorized, taskController.postTask);
 
 
 // Start Express Server

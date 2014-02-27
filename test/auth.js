@@ -2,7 +2,6 @@ var request = require('supertest');
 var app = require('../app');
 var should = require('should');
 
-var mongoose = require('mongoose');
 var User = require('../models/User');
 
 var user = { email: 'dummy@test.com', password: 'dummypass' };

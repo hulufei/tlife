@@ -1,8 +1,7 @@
 var request = require('supertest');
 var app = require('../app');
-var should = require('should');
+var _ = require('lodash');
 
-var mongoose = require('mongoose');
 var User = require('../models/User');
 var Task = require('../models/Task');
 
@@ -20,6 +19,10 @@ describe('Upload Task', function() {
 
   after(function(done) {
     User.find().remove(done);
+  });
+
+  afterEach(function(done) {
+    Task.find().remove(done);
   });
 
   it('should reject with invalid token', function(done) {
@@ -42,7 +45,7 @@ describe('Upload Task', function() {
       });
   });
 
-  it.skip('should reject with invalid tasks', function() {
+  it.skip('should reject with invalid tasks', function(done) {
     request(app)
       .post('/api/tasks')
       .set('x-auth-token', token)
@@ -54,20 +57,22 @@ describe('Upload Task', function() {
       });
   });
 
-  it('should upload a task file', function() {
+  it('should upload a task file', function(done) {
     request(app)
       .post('/api/tasks')
       .set('x-auth-token', token)
       .attach('t', __dirname + '/tasks/basic.t')
       .expect(200)
-      .end(function(err, res) {
+      .end(function() {
         Task.find({}, function(err, items) {
+          var today = new Date();
           items.should.have.length(3);
           items.should.matchEach(function(it) {
             it.should.have.property('start');
             it.should.have.property('text');
             it.should.have.property('end');
             it.should.have.property('date');
+            it.date.toDateString().should.be.equal(today.toDateString());
             it.should.have.property('user');
             it.should.containEql({ 'metas': { tag: 'test' } });
           });
@@ -76,4 +81,61 @@ describe('Upload Task', function() {
       });
   });
 
+  it('should upload a task file specify date', function(done) {
+    request(app)
+      .post('/api/tasks')
+      .set('x-auth-token', token)
+      .attach('t', __dirname + '/tasks/date-specify.t')
+      .expect(200)
+      .end(function() {
+        Task.find({}, function(err, items) {
+          var specifyDate = new Date(2014, 2-1, 9);
+          items.should.have.length(3);
+          items.should.matchEach(function(it) {
+            it.should.have.property('start');
+            it.should.have.property('text');
+            it.should.have.property('end');
+            it.should.have.property('date');
+            it.date.toDateString().should.be.equal(specifyDate.toDateString());
+            it.should.have.property('user');
+            it.should.containEql({ 'metas': { tag: 'specifyDate' } });
+          });
+          done();
+        });
+      });
+  });
+
+  it('should upload multiple task files', function(done) {
+    request(app)
+      .post('/api/tasks')
+      .set('x-auth-token', token)
+      .attach('t1', __dirname + '/tasks/basic.t')
+      .attach('t2', __dirname + '/tasks/date-specify.t')
+      .attach('t3', __dirname + '/tasks/basic.t')
+      .expect(200)
+      .end(function() {
+        Task.find({}, function(err, items) {
+          var specifyDate = new Date(2014, 2-1, 9);
+          var today = new Date();
+          items.should.have.length(9);
+          items.should.matchEach(function(it) {
+            it.should.have.property('start');
+            it.should.have.property('text');
+            it.should.have.property('end');
+            it.should.have.property('date');
+            it.should.have.property('user');
+          });
+
+          _.filter(items, { metas: { tag: 'test' } }).should.matchEach(function(it) {
+            it.date.toDateString().should.be.equal(today.toDateString());
+          });
+
+          _.filter(items, { metas: { tag: 'specifyDate' } }).should.matchEach(function(it) {
+            it.date.toDateString().should.be.equal(specifyDate.toDateString());
+          });
+
+          done();
+        });
+      });
+  });
 });

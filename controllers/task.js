@@ -7,15 +7,17 @@ exports.postTask = function(req, res, next) {
   // @see http://goo.gl/LC21f9
   if (req.is('multipart/form-data')) {
     var form = new multiparty.Form();
+    var t = new T();
+
     form.parse(req);
 
     form.on('error', function() {
       res.send(500, { message: 'Invalid tasks!' });
     });
 
-    form.on('part', function(part) {
-      // part is a readable stream
-      var t = new T(part);
+    form.on('part', t.parse.bind(t));
+
+    form.on('close', function() {
       t.parser.on('end', function(err) {
         if (err) return next(err);
 
