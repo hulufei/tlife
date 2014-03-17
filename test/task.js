@@ -162,6 +162,10 @@ describe('Task', function() {
             it.should.have.property('user');
             it.should.containEql({ 'metas': { tag: 'test' } });
           });
+          // Orders
+          tasks[0].text.trim().should.be.equal('task 1');
+          tasks[1].text.trim().should.be.equal('task 2');
+          tasks[2].text.trim().should.be.equal('中文');
           done();
         });
     });
