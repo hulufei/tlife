@@ -103,6 +103,8 @@ app.post('/auth/token', userController.getAuthToken);
 
 app.post('/api/tasks', passportConf.isAuthorized, taskController.postTask);
 
+app.get('/api/tasks/:days?/:ceiling?', passportConf.isAuthenticated, taskController.getTasks);
+
 
 // Start Express Server
 app.listen(app.get('port'), function() {
