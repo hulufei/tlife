@@ -202,5 +202,15 @@ describe('Task', function() {
           done();
         });
     });
+
+    it('should handle invalid params', function(done) {
+      agent
+        .get('/api/tasks')
+        .query({ days: 'NAN', ceiling: 'NOT-VALID-DATE' })
+        .end(function(err, res) {
+          res.status.should.be.equal(500);
+          done();
+        });
+    });
   });
 });

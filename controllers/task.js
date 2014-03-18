@@ -48,6 +48,9 @@ exports.getTasks = function(req, res, next) {
     , floor;
 
   ceiling = ceiling ? moment(ceiling) : moment();
+
+  if (!parseInt(days) || !ceiling.isValid()) return next('Invalid Params!');
+
   floor = ceiling.clone().subtract('days', days).hours(23).minutes(59).seconds(59);
   // Set ceiling to next day's 00:00
   ceiling.add('days', 1).hours(0).minutes(0).seconds(0);
