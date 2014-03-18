@@ -146,7 +146,10 @@ describe('Task', function() {
         .post('/api/tasks')
         .set('x-auth-token', token)
         .attach('t1', __dirname + '/tasks/basic.t')
+        .attach('t', __dirname + '/tasks/2014-2-10.t')
+        // date-specify -> 2014-2-9
         .attach('t2', __dirname + '/tasks/date-specify.t')
+        .attach('t', __dirname + '/tasks/2014-2-8.t')
         .end(done);
     });
 
@@ -166,6 +169,36 @@ describe('Task', function() {
           tasks[0].text.trim().should.be.equal('task 1');
           tasks[1].text.trim().should.be.equal('task 2');
           tasks[2].text.trim().should.be.equal('中文');
+          done();
+        });
+    });
+
+    it('should fetch specified days from today', function(done) {
+      agent
+        .get('/api/tasks')
+        .query({ days: 2 })
+        .end(function(err, res) {
+          var tasks = res.body;
+          var today = new Date();
+          tasks.should.have.length(3);
+          (new Date(tasks[0].date)).toDateString().should.be.equal(today.toDateString());
+          done();
+        });
+    });
+
+    it('should fetch tasks from specified days and date', function(done) {
+      agent
+        .get('/api/tasks')
+        .query({ days: 2, ceiling: '2014-2-9' })
+        .end(function(err, res) {
+          var tasks = res.body;
+          var date0209 = new Date(2014, 1, 9);
+          var date0208 = new Date(2014, 1, 8);
+          tasks.should.have.length(6);
+          (new Date(tasks[0].date)).toDateString().should.be.equal(date0209.toDateString());
+          (new Date(tasks[2].date)).toDateString().should.be.equal(date0209.toDateString());
+          (new Date(tasks[3].date)).toDateString().should.be.equal(date0208.toDateString());
+          (new Date(tasks[5].date)).toDateString().should.be.equal(date0208.toDateString());
           done();
         });
     });

@@ -39,16 +39,16 @@ exports.postTask = function(req, res, next) {
   }
 };
 
-// @refer get /api/tasks/:days/:ceiling
+// @refer get /api/tasks?days=1&ceiling=2013-3-3
 // Get tasks based on a specfied date and limit days, default: only today
 exports.getTasks = function(req, res, next) {
-  var ceiling = req.params.ceiling
-    , days = req.params.days || 1
+  var ceiling = req.query.ceiling
+    , days = req.query.days || 1
     , user = req.user
     , floor;
 
   ceiling = ceiling ? moment(ceiling) : moment();
-  floor = ceiling.clone().subtract('days', days).hours(0).minutes(0).seconds(0);
+  floor = ceiling.clone().subtract('days', days).hours(23).minutes(59).seconds(59);
   // Set ceiling to next day's 00:00
   ceiling.add('days', 1).hours(0).minutes(0).seconds(0);
 
