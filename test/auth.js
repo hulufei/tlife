@@ -42,11 +42,9 @@ describe('Auth Token', function() {
   });
 
   it('should notified when password incorrect with no token returned', function(done) {
-    user.password = 'wrongpass';
-
     request(app)
       .post('/auth/token')
-      .send(user)
+      .send({ email: user.email, password: 'wrongpass' })
       .expect(401)
       .end(function(err, res) {
         res.body.should.have.property('message', 'Password incorrect!');
