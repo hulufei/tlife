@@ -1,0 +1,124 @@
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}
+
+ul {
+  padding: 0
+}
+li {
+  list-style: none;
+}
+
+body {
+  font: 13px/1.5 'Gafata', sans-serif, arial;
+}
+
+h1 {
+  text-shadow: 0 2px #fff;
+}
+
+#container {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.error {
+  border: 1px solid red;
+}
+
+.tasks {
+  position: relative;
+  padding: 10px 10px 25px 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #ccc;
+  font-size: 16px;
+}
+
+.tasks .add {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  width: 100%;
+  text-align: right;
+}
+
+.tasks li {
+  position: relative;
+  margin: 5px 0;
+  padding: 0 15px;
+  cursor: pointer;
+}
+
+.task:hover {
+  color: #ccc;
+}
+.task .cnt {
+  float: left;
+  width: 230px;
+}
+.duration {
+  float: right;
+}
+.task .start,
+.task .end {
+  margin-left: 1em;
+}
+
+input.start,
+input.end {
+  width: 50px;
+}
+
+/* Action states */
+.edit,
+.remove,
+.task-inputs {
+  display: none;
+}
+.remove {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.remove:hover:before {
+  content: '';
+  width: 348px;
+  position: absolute;
+  left: -358px;
+  top: 10px;
+  border-bottom: 1px solid red;
+}
+.tasks .task-inputs {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.task-inputs .duration {
+  margin-right: 50px;
+}
+.editing .edit {
+  display: block;
+}
+.editing .task {
+  display: none;
+}
+.creating .task-inputs {
+  display: block;
+}
+.tasks li:hover .remove {
+  display: block;
+}

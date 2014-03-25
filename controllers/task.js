@@ -65,3 +65,7 @@ exports.getTasks = function(req, res, next) {
       res.send(tasks);
     });
 };
+
+exports.render = function(req, res) {
+  res.render('tasks');
+};

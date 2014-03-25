@@ -100,10 +100,10 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 
 app.post('/auth/token', userController.getAuthToken);
-
 app.post('/api/tasks', passportConf.isAuthorized, taskController.postTask);
-
 app.get('/api/tasks', passportConf.isAuthenticated, taskController.getTasks);
+
+app.get('/tasks', taskController.render);
 
 
 // Start Express Server

@@ -5,6 +5,7 @@
     "underscore": "~1.6.0",
     "jquery": "~2.1.0",
     "backbone": "~1.1.2",
-    "colors": "~0.2.0"
+    "colors": "~0.2.0",
+    "backbone.localstorage": "~1.1.7"
   }
 }

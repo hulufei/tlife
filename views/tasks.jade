@@ -1,0 +1,50 @@
+doctype
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title tlife mockup
+    link(rel='stylesheet', href='css/t.css', media='all')
+  body
+    #container
+
+    script#task-template(type='text/template').
+      <div class="task cf">
+        <span class="cnt"><%- text %></span>
+        <div class="duration">
+          <time class="start"><%- start %></time>
+          <time class="end"><%- end %></time>
+        </div>
+      </div>
+      <div class="edit cf">
+        <input name="cnt" type="text">
+        <div class="duration">
+          <input class="start" name="start" type="text" title="HH:mm">
+          <input class="end" name="end" type="text" title="HH:mm">
+        </div>
+      </div>
+      <span class="remove">-</span>
+
+    script#daily-template(type='text/template').
+      <h2>
+        <time><%- date %></time>
+      </h2>
+      <ul class="tasks">
+        <li class="add">+</li>
+        <li class="task-inputs">
+          <input name="cnt" type="text">
+          <div class="duration">
+            <input class="start" name="start" type="text" title="HH:mm">
+            <input class="end" name="end" type="text" title="HH:mm">
+          </div>
+        </li>
+      </ul>
+    script(src='lib/jquery/dist/jquery.js')
+    script(src='lib/underscore/underscore.js')
+    script(src='lib/backbone/backbone.js')
+    script(src='lib/backbone.localstorage/backbone.localStorage.js')
+    script(src='js/models/task.js')
+    script(src='js/collections/tasks.js')
+    script(src='js/views/task-view.js')
+    script(src='js/views/daily-view.js')
+    script(src='js/views/app-view.js')
+    script(src='js/app.js')
