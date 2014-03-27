@@ -1,5 +1,10 @@
-$(document).ready(function() {
-
-  // Place JavaScript code here...
-
-});
+//= require ../lib/jquery/dist/jquery
+//= require ../lib/underscore/underscore
+//= require ../lib/backbone/backbone
+//= require ../lib/backbone.localstorage/backbone.localStorage
+//= require models/task
+//= require collections/tasks
+//= require views/task-view
+//= require views/daily-view
+//= require views/app-view
+//= require app
