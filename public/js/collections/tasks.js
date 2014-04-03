@@ -5,7 +5,7 @@ var app = app || {};
   var Tasks = Backbone.Collection.extend({
     model: app.Task,
 
-    localStorage: new Backbone.LocalStorage('tlife'),
+    url: '/api/tasks',
 
     // Uniform time string format to HH:MM
     format: function(time) {
@@ -19,7 +19,7 @@ var app = app || {};
       ].join(':');
     },
 
-    // Filter tasks daily, date should be parsed by `Date`, like `yyyy-m-d`
+    // Filter tasks daily, date should be parsed by `Date`, like `yyyy/m/d`
     filterDaily: function(date) {
       var d = new Date(date);
 

@@ -45,7 +45,7 @@ var app = app || {};
       return this;
     },
 
-    // Switch this view into `editing` mode, displaying hte input field
+    // Switch this view into `editing` mode, displaying the input field
     edit: function() {
       this.$el.addClass('editing').siblings().removeClass('editing');
       this.$start.val(this.model.get('start'));

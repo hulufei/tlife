@@ -103,7 +103,7 @@ app.post('/auth/token', userController.getAuthToken);
 app.post('/api/tasks', passportConf.isAuthorized, taskController.postTask);
 app.get('/api/tasks', passportConf.isAuthenticated, taskController.getTasks);
 
-app.get('/tasks', taskController.render);
+app.get('/tasks', passportConf.isAuthenticated, taskController.render);
 
 
 // Start Express Server

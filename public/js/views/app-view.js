@@ -22,6 +22,7 @@ var app = app || {};
     },
 
     add: function(model) {
+      console.log('model added');
       var k = this.getKey(model);
       this.dailyViews[k].add(model);
     },
