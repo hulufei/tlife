@@ -1,0 +1,43 @@
+// Micro ClearFix Mixin
+.clearfix{
+  zoom:1;
+  &:before, &:after{ content:""; display:table; }
+  &:after{ clear: both; }
+}
+
+// Customized Reset Styles
+ul {
+  padding: 0
+}
+li {
+  list-style: none;
+}
+
+// Scaffolding
+body {
+  font: 13px/1.5 'Gafata', sans-serif, arial;
+}
+h1 {
+  text-shadow: 0 2px #fff;
+}
+#container {
+  width: 400px;
+  margin: 0 auto;
+}
+
+// Task daily section
+.task-day {
+  display: block;
+}
+.task-item {
+  margin-bottom: .5em;
+}
+.task-duration {
+  margin-right: 1em;
+}
+.task-start {
+  &:after {
+    content: '-';
+    margin: 0 .5em;
+  }
+}

@@ -3,9 +3,40 @@ html(lang='en')
   head
     meta(charset='UTF-8')
     title tlife mockup
-    link(rel='stylesheet', href='css/t.css', media='all')
+    != css('tasks')
+    != js('tasks')
   body
     #container
+      .tasks-daily
+        h2
+          time.task-date(datetime='2014.4.10') 2014.4.10
+          time.task-day 星期一
+        ul.task-list
+          li.task-item
+            span.task-duration
+              time.task-start 00:00
+              time.task-end 00:10
+            span.task-cnt Hello from first
+          li.task-item
+            span.task-duration
+              time.task-start 00:00
+              time.task-end 00:10
+            span.task-cnt Hello from first
+      .tasks-daily
+        h2
+          time.task-date(datetime='2014.4.10') 2014.4.09
+          time.task-day 星期日
+        ul.task-list
+          li.task-item
+            span.task-duration
+              time.task-start 00:00
+              time.task-end 00:10
+            span.task-cnt Hello from first
+          li.task-item
+            span.task-duration
+              time.task-start 00:00
+              time.task-end 00:10
+            span.task-cnt Hello from first
 
     script#task-template(type='text/template').
       <div class="task cf">
@@ -39,4 +70,4 @@ html(lang='en')
         </li>
       </ul>
 
-    != js('main')
+    // != js('main')
