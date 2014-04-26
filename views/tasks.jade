@@ -39,35 +39,16 @@ html(lang='en')
             span.task-cnt Hello from first
 
     script#task-template(type='text/template').
-      <div class="task cf">
-        <span class="cnt"><%- text %></span>
-        <div class="duration">
-          <time class="start"><%- start %></time>
-          <time class="end"><%- end %></time>
-        </div>
-      </div>
-      <div class="edit cf">
-        <input name="cnt" type="text">
-        <div class="duration">
-          <input class="start" name="start" type="text" title="HH:mm">
-          <input class="end" name="end" type="text" title="HH:mm">
-        </div>
-      </div>
-      <span class="remove">-</span>
+      span.task-duration
+        time.task-start 00:00
+        time.task-end 00:10
+      span.task-cnt Hello from first
 
     script#daily-template(type='text/template').
-      <h2>
-        <time><%- date %></time>
-      </h2>
-      <ul class="tasks">
-        <li class="add">+</li>
-        <li class="task-inputs">
-          <input name="cnt" type="text">
-          <div class="duration">
-            <input class="start" name="start" type="text" title="HH:mm">
-            <input class="end" name="end" type="text" title="HH:mm">
-          </div>
-        </li>
-      </ul>
+      .tasks-daily
+        h2
+          time.task-date(datetime='2014.4.10') 2014.4.09
+          time.task-day 星期日
+        ul.task-list
 
     // != js('main')
