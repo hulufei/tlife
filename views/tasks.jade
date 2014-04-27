@@ -38,17 +38,17 @@ html(lang='en')
               time.task-end 00:10
             span.task-cnt Hello from first
 
-    script#task-template(type='text/template').
+    script#task-template(type='text/template')
       span.task-duration
-        time.task-start 00:00
-        time.task-end 00:10
-      span.task-cnt Hello from first
+        time.task-start {{ start }}
+        time.task-end {{ end }}
+      span.task-cnt {{ text }}
 
-    script#daily-template(type='text/template').
+    script#daily-template(type='text/template')
       .tasks-daily
         h2
-          time.task-date(datetime='2014.4.10') 2014.4.09
-          time.task-day 星期日
+          time.task-date(datetime='{{ formatedDate }}') {{ formatedDate }}
+          time.task-day {{ day }}
         ul.task-list
 
     // != js('main')

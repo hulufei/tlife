@@ -1,11 +1,13 @@
 class TaskItem extends Spine.Controller
   tag: 'li'
-  classname: 'task-item'
+  className: 'task-item'
 
   constructor: ->
-    # super
+    super
     throw '@item required' unless @item
     @tpl = $('#task-template').html()
+    # Speed up future uses
+    Mustache.parse(@tpl)
 
     @item.bind('update', @render)
     @item.bind('destroy', @remove)
@@ -16,4 +18,6 @@ class TaskItem extends Spine.Controller
     @
 
   template: (item) ->
-    @tpl
+    Mustache.render(@tpl, item)
+
+(exports ? this).TaskItem = TaskItem;

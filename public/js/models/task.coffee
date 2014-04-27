@@ -8,6 +8,20 @@ class Task extends Spine.Model
   @extend Spine.Model.Ajax
   @url: '/api/tasks'
 
+  constructor: ->
+    super
+    @dateObj = new Date(@date)
+
+  days: [
+    'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'
+  ]
+
+  formatDate: ->
+    @formatedDate or= @dateObj.toLocaleDateString()
+
+  getDay: ->
+    @day or= @days[@dateObj.getDay()]
+
   validate: ->
     timePattern = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$/
 

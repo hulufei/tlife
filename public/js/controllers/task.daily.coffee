@@ -4,4 +4,6 @@ class DailyTasks extends Spine.Controller
     @append(task.render())
 
   append: (task) ->
-    @$el.append(task.el)
+    @el.append(task.el)
+
+(exports ? this).DailyTasks = DailyTasks;
