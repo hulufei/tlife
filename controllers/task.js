@@ -59,6 +59,7 @@ exports.getTasks = function(req, res, next) {
     .find({ user: user })
     .where('date').lt(ceiling).gt(floor)
     .sort('-date')
+    .select('-user -__v')
     .exec(function(err, tasks) {
       if (err) return next(err);
 
