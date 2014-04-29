@@ -1,11 +1,4 @@
 module.exports = {
-  'development': {
-    url: 'mongodb://localhost/tlife-dev',
-    localAuth: true,
-    sessionSecret: 'Your Session Secret goes here'
-  },
-  'test': {
-    url: 'mongodb://localhost/tlife-test',
-    sessionSecret: 'Your Session Secret goes here'
-  }
+  db: process.env.MONGODB || 'mongodb://localhost/tlife-dev',
+  sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here'
 };

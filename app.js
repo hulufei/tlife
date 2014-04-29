@@ -28,11 +28,11 @@ var taskController = require('./controllers/task');
  * API keys + Passport configuration.
  */
 
-var config = require('./config/secrets')[app.get('env')];
+var config = require('./config/secrets');
 var passportConf = require('./config/passport');
 
 // Bootstrap db connection
-mongoose.connect(config.url);
+mongoose.connect(config.db);
 mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
@@ -67,7 +67,7 @@ app.use(express.cookieParser());
 app.use(express.session({
   secret: config.sessionSecret,
   store: new MongoStore({
-    url: config.url,
+    url: config.db,
     auto_reconnect: true
   })
 }));

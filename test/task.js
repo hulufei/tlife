@@ -162,7 +162,6 @@ describe('Task', function() {
           tasks.should.have.length(3);
           tasks.should.matchEach(function(it) {
             (new Date(it.date)).toDateString().should.be.equal(today.toDateString());
-            it.should.have.property('user');
             it.should.containEql({ 'metas': { tag: 'test' } });
           });
           done();
