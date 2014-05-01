@@ -10,17 +10,22 @@ class Task extends Spine.Model
 
   constructor: ->
     super
-    @dateObj = new Date(@date)
+    # Convert date string to Date Object
+    @date = new Date(@date)
 
   days: [
     'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'
   ]
 
   formatDate: ->
-    @formatedDate or= @dateObj.toLocaleDateString()
+    @formatedDate or= @date.toLocaleDateString()
 
   getDay: ->
-    @day or= @days[@dateObj.getDay()]
+    @day or= @days[@date.getDay()]
+
+  # For mustache render array
+  metasToArray: ->
+    @metaItems = (item: "#{k}=#{v}" for k, v of @metas)
 
   validate: ->
     timePattern = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$/

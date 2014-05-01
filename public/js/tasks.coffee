@@ -35,8 +35,8 @@ class App extends Spine.Controller
       dailyTasks.addOne(task)
 
   template: (task) ->
-    task.formatDate()
     task.getDay()
+    task.formatDate()
     Mustache.render(@dailyTpl, task)
 
 $ ->

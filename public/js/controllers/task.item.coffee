@@ -18,6 +18,7 @@ class TaskItem extends Spine.Controller
     @
 
   template: (item) ->
+    item.metasToArray()
     Mustache.render(@tpl, item)
 
 (exports ? this).TaskItem = TaskItem;

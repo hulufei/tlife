@@ -13,6 +13,10 @@ html(lang='en')
         time.task-start {{ start }}
         time.task-end {{ end }}
       span.task-cnt {{ text }}
+      ul.task-metas
+        {{#metaItems}}
+        li.task-meta {{ item }}
+        {{/metaItems}}
 
     script#daily-template(type='text/template')
       .tasks-daily
