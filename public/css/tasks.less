@@ -30,7 +30,9 @@ h1 {
   display: block;
 }
 .task-item {
+  position: relative;
   margin-bottom: .5em;
+  cursor: pointer;
 }
 .task-duration {
   margin-right: 1em;
@@ -40,4 +42,12 @@ h1 {
     content: '-';
     margin: 0 .5em;
   }
+}
+.task-metas {
+  display: none;
+}
+.task-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
 }

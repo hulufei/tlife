@@ -1,6 +1,7 @@
 #= require ../lib/jquery/dist/jquery
 #= require ../lib/spine/src/spine
 #= require ../lib/spine/src/ajax
+#= require ../lib/spine/src/manager
 #= require ../lib/mustache/mustache
 #= require models/task
 #= require controllers/task.item

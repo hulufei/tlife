@@ -13,10 +13,26 @@ html(lang='en')
         time.task-start {{ start }}
         time.task-end {{ end }}
       span.task-cnt {{ text }}
+      div.task-actions
+        span.task-modify M
       ul.task-metas
         {{#metaItems}}
-        li.task-meta {{ item }}
+        li.task-meta {{ item.k }} = {{ item.v }}
         {{/metaItems}}
+
+    script#task-edit-template(type='text/template')
+      span.task-duration
+        input.task-start(type='text', value='{{ start }}')
+        input.task-end(type='text', value='{{ end }}')
+      input.task-cnt(type='text', value='{{ text }}')
+      ul.task-metas
+        {{#metaItems}}
+        li.task-meta
+          input(type='text', value='{{ item.k }}')
+          | =
+          input(type='text', value='{{ item.v }}')
+        {{/metaItems}}
+        li.add-task-meta +
 
     script#daily-template(type='text/template')
       .tasks-daily

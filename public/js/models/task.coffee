@@ -25,7 +25,7 @@ class Task extends Spine.Model
 
   # For mustache render array
   metasToArray: ->
-    @metaItems = (item: "#{k}=#{v}" for k, v of @metas)
+    @metaItems = (item: {k: k, v: v} for k, v of @metas)
 
   validate: ->
     timePattern = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$/
