@@ -15,7 +15,7 @@ html(lang='en')
       span.task-cnt {{ text }}
       div.task-actions
         span.task-modify M
-      ul.task-metas
+      ul.task-metas.hide
         {{#metaItems}}
         li.task-meta {{ item.k }} = {{ item.v }}
         {{/metaItems}}
@@ -27,12 +27,16 @@ html(lang='en')
       input.task-cnt(type='text', value='{{ text }}')
       ul.task-metas
         {{#metaItems}}
-        li.task-meta
-          input(type='text', value='{{ item.k }}')
-          | =
-          input(type='text', value='{{ item.v }}')
+        {{> metaItem}}
         {{/metaItems}}
         li.add-task-meta +
+      button.task-save save
+
+    script#task-meta-input-template(type='text/template')
+      li.task-meta
+        input(type='text', value='{{ item.k }}')
+        | =
+        input(type='text', value='{{ item.v }}')
 
     script#daily-template(type='text/template')
       .tasks-daily

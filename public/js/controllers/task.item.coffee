@@ -9,29 +9,56 @@ class TaskItemBase extends Spine.Controller
     Mustache.render(@tpl, item)
 
 class TaskItemShow extends TaskItemBase
-  tag: 'div'
   className: 'task-static'
+
+  elements:
+    '.task-metas': 'metas'
+
+  events:
+    'click': 'toggleMetas'
+    'click .task-modify': 'toggleEdit'
+    'click .task-metas': 'stopPropagation'
 
   constructor: ->
     super
-    # throw '@item required' unless @item
     @tpl = $('#task-template').html()
     # Speed up future uses
     Mustache.parse(@tpl)
 
-    # @item.bind('update', @render)
-    # @item.bind('destroy', @remove)
+  toggleMetas: (e) =>
+    @metas.toggle()
+
+  toggleEdit: (e) =>
+    @stack.edit.active()
+    e.stopPropagation()
+
+  # Stop propagation
+  stopPropagation: (e) ->
+    e.stopPropagation()
 
 class TaskItemEdit extends TaskItemBase
-  tag: 'div'
   className: 'task-edit'
+
+  events:
+    'click .add-task-meta': 'addMeta'
+    'click .task-save': 'save'
 
   constructor: ->
     super
-    # throw '@item required' unless @item
     @tpl = $('#task-edit-template').html()
+    @metaItemTpl = $('#task-meta-input-template').html()
     # Speed up future uses
     Mustache.parse(@tpl)
+
+  template: (item) ->
+    item.metasToArray()
+    Mustache.render(@tpl, item, metaItem: @metaItemTpl)
+
+  addMeta: (e) =>
+    $(@metaItemTpl).insertBefore(e.target).find('input').val('').first().focus()
+
+  save: =>
+    @stack.show.active()
 
 class TaskItem extends Spine.Stack
   tag: 'li'
