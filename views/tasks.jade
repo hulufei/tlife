@@ -22,21 +22,21 @@ html(lang='en')
 
     script#task-edit-template(type='text/template')
       span.task-duration
-        input.task-start(type='text', value='{{ start }}')
-        input.task-end(type='text', value='{{ end }}')
-      input.task-cnt(type='text', value='{{ text }}')
+        input.task-start(name='start', type='text', value='{{ start }}')
+        input.task-end(name='end', type='text', value='{{ end }}')
+      input.task-cnt(name='text', type='text', value='{{ text }}')
       ul.task-metas
         {{#metaItems}}
         {{> metaItem}}
         {{/metaItems}}
         li.add-task-meta +
-      button.task-save save
+      button.task-save(type='submit') save
 
     script#task-meta-input-template(type='text/template')
       li.task-meta
-        input(type='text', value='{{ item.k }}')
+        input(name='metaKey', type='text', value='{{ item.k }}')
         | =
-        input(type='text', value='{{ item.v }}')
+        input(name='metaValue', type='text', value='{{ item.v }}')
 
     script#daily-template(type='text/template')
       .tasks-daily

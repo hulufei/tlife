@@ -57,8 +57,18 @@ class TaskItemEdit extends TaskItemBase
   addMeta: (e) =>
     $(@metaItemTpl).insertBefore(e.target).find('input').val('').first().focus()
 
-  save: =>
-    @stack.show.active()
+  save: (e) =>
+    e.preventDefault()
+    # Update model
+    attrs =
+      start: @el.find('[name=start]').val(),
+      end: @el.find('[name=end]').val(),
+      text: @el.find('[name=text]').val()
+    @el.find('.task-meta').each ->
+      _this = $(this)
+      attrs[_this.find('[name=metaKey]').val()] = _this.find('[name=metaValue]').val()
+    @item.load(attrs)
+    @stack.show.active() if @item.save()
 
 class TaskItem extends Spine.Stack
   tag: 'li'
@@ -74,5 +84,10 @@ class TaskItem extends Spine.Stack
     super
     @append(@show.render(@item))
     @append(@edit.render(@item))
+    @listenTo(@item, 'error', @popError)
+
+  popError: (task, err) =>
+    @log('Task validation failed')
+    @log(err)
 
 (exports ? this).TaskItem = TaskItem;

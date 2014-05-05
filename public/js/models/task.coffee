@@ -39,6 +39,7 @@ class Task extends Spine.Model
 
     for k of error
       # Validate failed
-      return error if k
+      return error if error[k]
+    return null
 
 (exports ? this).Task = Task;
