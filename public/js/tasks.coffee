@@ -12,6 +12,7 @@ class App extends Spine.Controller
 
   constructor: ->
     super
+    @daily = {}
     @dailyTpl = $('#daily-template').html()
     # Speed up future uses
     Mustache.parse(@dailyTpl)
@@ -25,19 +26,18 @@ class App extends Spine.Controller
     @log('Refresh tasks and update whole view')
     @log(Task.all())
 
-    daily = {}
     Task.each (task) =>
       stamp = (new Date task.date).getTime()
-      dailyTasks = daily[stamp]
+      dailyTasks = @daily[stamp]
       if not dailyTasks
         dailyContainer = $(@template(task))
         @el.append(dailyContainer)
-        dailyTasks = daily[stamp] = new DailyTasks(el: dailyContainer.find('.task-list'))
+        dailyTasks = @daily[stamp] = new DailyTasks(el: dailyContainer.find('.task-list'))
       dailyTasks.addOne(task)
 
   template: (task) ->
     task.getDay()
-    task.formatDate()
+    task.getFormatDate()
     Mustache.render(@dailyTpl, task)
 
 $ ->

@@ -61,8 +61,8 @@ class TaskItemEdit extends TaskItemBase
     e.preventDefault()
     # Update model
     attrs =
-      start: @el.find('[name=start]').val(),
-      end: @el.find('[name=end]').val(),
+      start: Task.formatTime(@el.find('[name=start]').val()),
+      end: Task.formatTime(@el.find('[name=end]').val()),
       text: @el.find('[name=text]').val()
     @el.find('.task-meta').each ->
       _this = $(this)

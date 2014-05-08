@@ -17,7 +17,14 @@ class Task extends Spine.Model
     'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'
   ]
 
-  formatDate: ->
+  @formatTime: (time) ->
+    [h, m] = time.split(':')
+    [
+      if +h > 9 then h else '0' + (+h),
+      if +m > 9 then m else '0' + (+m),
+    ].join(':')
+
+  getFormatDate: ->
     @formatedDate or= @date.toLocaleDateString()
 
   getDay: ->
