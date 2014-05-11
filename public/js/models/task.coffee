@@ -17,6 +17,8 @@ class Task extends Spine.Model
     'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'
   ]
 
+  # Format time to hh:mm
+  # Note: h -> h:00
   @formatTime: (time) ->
     [h, m] = time.split(':')
     [
@@ -41,8 +43,8 @@ class Task extends Spine.Model
       # More clear this way
       start: if not timePattern.test(@start) then 'Invalid start time'
       # Below is the same as above through
-      end: not timePattern.test(@end) and 'Invalid end time'
-      cnt: not $.trim(@text) and 'Task should not be empty'
+      end: if not timePattern.test(@end) then 'Invalid end time'
+      text: if not $.trim(@text) then 'Task should not be empty'
 
     for k of error
       # Validate failed

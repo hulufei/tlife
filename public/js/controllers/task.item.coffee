@@ -59,6 +59,9 @@ class TaskItemEdit extends TaskItemBase
 
   save: (e) =>
     e.preventDefault()
+    # Reset error
+    @$('.error').removeClass('error')
+    @stack.el.siblings('.conflict').removeClass('conflict')
     # Update model
     attrs =
       start: Task.formatTime(@el.find('[name=start]').val()),
@@ -66,9 +69,12 @@ class TaskItemEdit extends TaskItemBase
       text: @el.find('[name=text]').val()
     @el.find('.task-meta').each ->
       _this = $(this)
-      attrs[_this.find('[name=metaKey]').val()] = _this.find('[name=metaValue]').val()
+      key = $.trim _this.find('[name=metaKey]').val()
+      value = $.trim _this.find('[name=metaValue]').val()
+      # Ignore meta if key or value is empty
+      attrs[key] = value if key and value
     @item.load(attrs)
-    @stack.show.active() if @item.save()
+    @stack.show.active() if @item.save() and @stack.daily.validate(@item)
 
 class TaskItem extends Spine.Stack
   tag: 'li'
@@ -85,9 +91,15 @@ class TaskItem extends Spine.Stack
     @append(@show.render(@item))
     @append(@edit.render(@item))
     @listenTo(@item, 'error', @popError)
+    @listenTo(@item, 'conflict', @markConflict)
 
   popError: (task, err) =>
     @log('Task validation failed')
     @log(err)
+    @$('[name=' + k + ']').addClass('error') for k of err when err[k]
+    @
+
+  markConflict: =>
+    @el.addClass('conflict')
 
 (exports ? this).TaskItem = TaskItem;
