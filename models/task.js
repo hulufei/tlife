@@ -10,4 +10,13 @@ var taskSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
+// Transform _id to id, match FrontEnd model schema
+// Mongoose assigns each of your schemas an id virtual getter by default
+// which returns the documents _id field cast to a string,
+// or in the case of ObjectIds, its hexString.
+// see: http://mongoosejs.com/docs/guide.html#id
+//
+// Ensure virtual fields are serialised
+taskSchema.set('toJSON', { virtuals: true });
+
 module.exports = mongoose.model('Task', taskSchema);
