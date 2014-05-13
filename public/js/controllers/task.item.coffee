@@ -64,15 +64,16 @@ class TaskItemEdit extends TaskItemBase
     @stack.el.siblings('.conflict').removeClass('conflict')
     # Update model
     attrs =
-      start: Task.formatTime(@el.find('[name=start]').val()),
-      end: Task.formatTime(@el.find('[name=end]').val()),
+      start: Task.formatTime(@el.find('[name=start]').val())
+      end: Task.formatTime(@el.find('[name=end]').val())
       text: @el.find('[name=text]').val()
+      metas: {}
     @el.find('.task-meta').each ->
       _this = $(this)
       key = $.trim _this.find('[name=metaKey]').val()
       value = $.trim _this.find('[name=metaValue]').val()
       # Ignore meta if key or value is empty
-      attrs[key] = value if key and value
+      attrs.metas[key] = value if key and value
     @item.load(attrs)
     @stack.show.active() if @item.save() and @stack.daily.validate(@item)
 
@@ -92,6 +93,7 @@ class TaskItem extends Spine.Stack
     @append(@edit.render(@item))
     @listenTo(@item, 'error', @popError)
     @listenTo(@item, 'conflict', @markConflict)
+    @listenTo(@item, 'update', @show.render)
 
   popError: (task, err) =>
     @log('Task validation failed')

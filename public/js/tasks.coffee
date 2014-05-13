@@ -17,16 +17,17 @@ class App extends Spine.Controller
     # Speed up future uses
     Mustache.parse(@dailyTpl)
 
-    Task.bind('refresh', @setup)
+    # Setup whole view only at beginning
+    Task.one('refresh', @setup)
     Task.bind('ajaxError', @ajaxError)
 
     # Fetch a week's tasks by default
     Task.fetch(data: 'days=7')
     @log('App Initialized')
 
-  setup: =>
+  setup: (tasks) =>
     @log('Refresh tasks and update whole view')
-    @log(Task.all())
+    @log(tasks)
 
     Task.each (task) =>
       stamp = (new Date task.date).getTime()

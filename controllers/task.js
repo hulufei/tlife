@@ -67,6 +67,19 @@ exports.getTasks = function(req, res, next) {
     });
 };
 
+// @refer put /api/tasks/:id
+exports.updateTask = function(req, res, next) {
+  var id = req.params.id;
+  var task = req.body;
+  // Spine expects a JSON representation of the record as a server response to
+  // create and update requests.
+  Task.findOneAndUpdate({ _id: id }, { $set: task },
+      { select: '-user -__v' }, function(err, doc) {
+    if (err) return next(err);
+    res.send(doc);
+  });
+}
+
 exports.render = function(req, res) {
   res.render('tasks');
 };
