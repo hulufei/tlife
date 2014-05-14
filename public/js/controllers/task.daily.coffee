@@ -1,11 +1,21 @@
 class DailyTasks extends Spine.Controller
+  events:
+    'click .task-add': 'createOne'
+
+  createOne: (e) =>
+    e.preventDefault()
+    item = new Task(date: @date)
+    @addOne(item).edit.active()
+
   addOne: (item) ->
     task = new TaskItem(item: item)
     # Reference to daily task
     task.daily = @
+    @date = item.date
     @tasks = @tasks or []
     @tasks.push(item)
     @append(task)
+    return task
 
   # Return false if failed
   validate: (item) ->

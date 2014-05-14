@@ -75,7 +75,8 @@ class TaskItemEdit extends TaskItemBase
       # Ignore meta if key or value is empty
       attrs.metas[key] = value if key and value
     @item.load(attrs)
-    @stack.show.active() if @item.save() and @stack.daily.validate(@item)
+    # Validate should before save, otherwise item validate failed but still saved
+    @stack.show.active() if @stack.daily.validate(@item) and @item.save()
 
 class TaskItem extends Spine.Stack
   tag: 'li'
