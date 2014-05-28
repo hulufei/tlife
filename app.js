@@ -100,8 +100,10 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 
 app.post('/auth/token', userController.getAuthToken);
-app.post('/api/tasks', passportConf.isAuthorized, taskController.postTask);
+// t upload end point
+app.post('/t/tasks', passportConf.isAuthorized, taskController.postTask);
 app.get('/api/tasks', passportConf.isAuthenticated, taskController.getTasks);
+app.post('/api/tasks', passportConf.isAuthenticated, taskController.createTask);
 app.put('/api/tasks/:id', passportConf.isAuthenticated, taskController.updateTask);
 
 app.get('/tasks', passportConf.isAuthenticated, taskController.render);

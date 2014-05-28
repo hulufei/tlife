@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var taskSchema = new Schema({
-  start: String,
-  text: String,
+  start: { type: String, required: true },
+  text: { type: String, required: true },
   metas: {},
-  end: String,
+  end: { type: String, required: true },
   date: { type: Date, default: Date.now },
   user: { type: Schema.Types.ObjectId, ref: 'User' }
 });

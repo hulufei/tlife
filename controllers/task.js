@@ -3,7 +3,7 @@ var moment = require('moment');
 var T = require('t');
 var Task = require('../models/Task');
 
-// @refer post /api/tasks
+// @refer post /t/tasks
 // Upload task files
 exports.postTask = function(req, res, next) {
   // Remove multipart middleware to handle upload files
@@ -65,6 +65,27 @@ exports.getTasks = function(req, res, next) {
 
       res.send(tasks);
     });
+};
+
+// @refer post /api/tasks
+// Create new task
+exports.createTask = function(req, res, next) {
+  var task = req.body;
+  task.user = req.user;
+  // Client id here is useless
+  delete task.id
+  Task.create(task, function(err, doc) {
+    if (err) return next(err);
+
+    res.send({
+      id: doc.id,
+      start: doc.start,
+      text: doc.text,
+      end: doc.end,
+      metas: doc.metas,
+      date: doc.date
+    });
+  })
 };
 
 // @refer put /api/tasks/:id
