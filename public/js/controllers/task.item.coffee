@@ -94,7 +94,19 @@ class TaskItem extends Spine.Stack
     @append(@edit.render(@item))
     @listenTo(@item, 'error', @popError)
     @listenTo(@item, 'conflict', @markConflict)
-    @listenTo(@item, 'update', @show.render)
+    @listenTo @item, 'update', (task) =>
+      # TODO: why @item.save not update id to @item?
+      @item = task
+      @show.render()
+
+    # Debug
+    @listenTo @item, 'save', (task) => console.log('item saved', @item, task)
+    @listenTo @item, 'update', (task) => console.log('item updated', @item, task)
+    @listenTo @item, 'create', (task) => console.log('item created', @item, task)
+    @listenTo @item, 'destroy', (task) => console.log('item destroyed', @item, task)
+    @listenTo @item, 'change', (task) => console.log('item changed', @item, task)
+    @listenTo @item, 'refresh', (task) => console.log('item refreshed', @item, task)
+    @listenTo @item, 'error', (task) => console.log('item error', @item, task)
 
   popError: (task, err) =>
     @log('Task validation failed')
