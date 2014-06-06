@@ -1,6 +1,6 @@
 var multiparty = require('multiparty');
 var moment = require('moment');
-var T = require('t');
+var T = require('t-cli');
 var Task = require('../models/Task');
 
 // @refer post /t/tasks

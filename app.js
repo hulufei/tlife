@@ -3,7 +3,6 @@
  * Module dependencies.
  */
 
-var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var flash = require('express-flash');
@@ -11,8 +10,6 @@ var expressValidator = require('express-validator');
 var MongoStore = require('connect-mongo')(express);
 var mongoose = require('mongoose');
 var passport = require('passport');
-var multiparty = require('multiparty');
-var T = require('t');
 
 var app = express();
 
