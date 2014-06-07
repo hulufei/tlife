@@ -26,6 +26,8 @@ class DailyTasks extends Spine.Controller
       return false
     for task in @tasks
       if item.id isnt task.id and
+        # If not compare cid, failed when modified new added item
+        item.cid isnt task.cid and
         not (item.end <= task.start or item.start >= task.end)
           task.trigger('conflict')
           return false

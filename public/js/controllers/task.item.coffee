@@ -1,7 +1,7 @@
+# Note: Controller stacks's model uniform to Manager
 class TaskItemBase extends Spine.Controller
-  render: (item) =>
-    @item = item if item
-    @html(@template(@item))
+  render: () =>
+    @html(@template(@stack.item))
     @
 
   template: (item) ->
@@ -74,9 +74,9 @@ class TaskItemEdit extends TaskItemBase
       value = $.trim _this.find('[name=metaValue]').val()
       # Ignore meta if key or value is empty
       attrs.metas[key] = value if key and value
-    @item.load(attrs)
+    @stack.item.load(attrs)
     # Validate should before save, otherwise item validate failed but still saved
-    @stack.show.active() if @stack.daily.validate(@item) and @item.save()
+    @stack.show.active() if @stack.daily.validate(@stack.item) and @stack.item.save()
 
 class TaskItem extends Spine.Stack
   tag: 'li'
@@ -90,12 +90,13 @@ class TaskItem extends Spine.Stack
 
   constructor: ->
     super
-    @append(@show.render(@item))
-    @append(@edit.render(@item))
+    @append(@show.render())
+    @append(@edit.render())
     @listenTo(@item, 'error', @popError)
     @listenTo(@item, 'conflict', @markConflict)
     @listenTo @item, 'update', (task) =>
       # TODO: why @item.save not update id to @item?
+      # So manually set updated task to item
       @item = task
       @show.render()
 
