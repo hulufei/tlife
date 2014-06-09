@@ -1,4 +1,4 @@
-# Note: Controller stacks's model uniform to Manager
+# Note: To keep consistence, use Manager(TaskItem)'s item in stacks
 class TaskItemBase extends Spine.Controller
   render: () =>
     @html(@template(@stack.item))
@@ -95,19 +95,10 @@ class TaskItem extends Spine.Stack
     @listenTo(@item, 'error', @popError)
     @listenTo(@item, 'conflict', @markConflict)
     @listenTo @item, 'update', (task) =>
-      # TODO: why @item.save not update id to @item?
-      # So manually set updated task to item
-      @item = task
+      # FIXME: Why @item.save not update responsed server id to @item?
+      # So manually update item(use .load to update reference item in daily tasks)
+      @item.load(task)
       @show.render()
-
-    # Debug
-    @listenTo @item, 'save', (task) => console.log('item saved', @item, task)
-    @listenTo @item, 'update', (task) => console.log('item updated', @item, task)
-    @listenTo @item, 'create', (task) => console.log('item created', @item, task)
-    @listenTo @item, 'destroy', (task) => console.log('item destroyed', @item, task)
-    @listenTo @item, 'change', (task) => console.log('item changed', @item, task)
-    @listenTo @item, 'refresh', (task) => console.log('item refreshed', @item, task)
-    @listenTo @item, 'error', (task) => console.log('item error', @item, task)
 
   popError: (task, err) =>
     @log('Task validation failed')
