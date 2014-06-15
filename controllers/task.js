@@ -24,9 +24,12 @@ exports.postTask = function(req, res, next) {
       t.parser.on('end', function(err) {
         if (err) return next(err);
 
-        t.collections.forEach(function(c) { c.user = req.user; });
+        var tasks = t.collections.filter(function(c) {
+          c.user = req.user;
+          return c.start && c.end && c.text;
+        });
 
-        Task.create(t.collections, function(err) {
+        Task.create(tasks, function(err) {
           if (err) return next(err);
 
           res.send(200);
