@@ -14,7 +14,8 @@ html(lang='en')
         time.task-end {{ end }}
       span.task-cnt {{ text }}
       div.task-actions
-        span.task-modify M
+        span.task-action.task-modify M
+        span.task-action.task-delete D
       ul.task-metas.hide
         {{#metaItems}}
         li.task-meta {{ item.k }} = {{ item.v }}

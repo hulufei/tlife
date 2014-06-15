@@ -102,6 +102,7 @@ app.post('/t/tasks', passportConf.isAuthorized, taskController.postTask);
 app.get('/api/tasks', passportConf.isAuthenticated, taskController.getTasks);
 app.post('/api/tasks', passportConf.isAuthenticated, taskController.createTask);
 app.put('/api/tasks/:id', passportConf.isAuthenticated, taskController.updateTask);
+app.delete('/api/tasks/:id', passportConf.isAuthenticated, taskController.deleteTask);
 
 app.get('/tasks', passportConf.isAuthenticated, taskController.render);
 

@@ -104,6 +104,15 @@ exports.updateTask = function(req, res, next) {
   });
 }
 
+// @refer delete /api/tasks/:id
+exports.deleteTask = function(req, res, next) {
+  var id = req.params.id;
+  Task.findByIdAndRemove(id, function(err) {
+    if (err) return next(err);
+    res.send(200);
+  });
+}
+
 exports.render = function(req, res) {
   res.render('tasks');
 };

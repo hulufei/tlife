@@ -17,6 +17,7 @@ class TaskItemShow extends TaskItemBase
   events:
     'click': 'toggleMetas'
     'click .task-modify': 'toggleEdit'
+    'click .task-delete': 'destroy'
     'click .task-metas': 'stopPropagation'
 
   constructor: ->
@@ -32,7 +33,13 @@ class TaskItemShow extends TaskItemBase
     @stack.edit.active()
     e.stopPropagation()
 
-  # Stop propagation
+  destroy: =>
+    @el.remove()
+    @stack.item.destroy()
+    # Remove task from daily tasks
+    @stack.daily.tasks =
+      (task for task in @stack.daily.tasks when task.id isnt @stack.item.id)
+
   stopPropagation: (e) ->
     e.stopPropagation()
 
