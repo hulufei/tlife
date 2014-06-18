@@ -2,6 +2,13 @@ class DailyTasks extends Spine.Controller
   events:
     'click .task-add': 'createOne'
 
+  @sortByTime: (a, b)->
+    if a.end < b.end
+      return -1
+    if a.end > b.end
+      return 1
+    return 0
+
   createOne: (e) =>
     e.preventDefault()
     item = new Task(date: @date)

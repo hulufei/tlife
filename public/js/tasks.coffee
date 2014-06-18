@@ -29,14 +29,18 @@ class App extends Spine.Controller
     @log('Refresh tasks and update whole view')
     @log(tasks)
 
+    # Group by date first
     Task.each (task) =>
       stamp = (new Date task.date).getTime()
-      dailyTasks = @daily[stamp]
-      if not dailyTasks
-        dailyContainer = $(@template(task))
-        @el.append(dailyContainer)
-        dailyTasks = @daily[stamp] = new DailyTasks(el: dailyContainer.find('.task-list'))
-      dailyTasks.addOne(task)
+      (@daily[stamp] = @daily[stamp] or []).push(task)
+
+    for stamp, tasks of @daily
+      dailyContainer = $(@template(task))
+      dailyTasks = new DailyTasks(el: dailyContainer.find('.task-list'))
+      for task in tasks.sort(DailyTasks.sortByTime)
+        dailyTasks.addOne(task)
+      @daily[stamp] = dailyTasks
+      @el.append(dailyContainer)
 
   template: (task) ->
     task.getDay()
