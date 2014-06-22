@@ -109,7 +109,8 @@ exports.deleteTask = function(req, res, next) {
   var id = req.params.id;
   Task.findByIdAndRemove(id, function(err) {
     if (err) return next(err);
-    res.send(200);
+    // Prevent ajaxError in Spine
+    res.send({});
   });
 }
 

@@ -8,6 +8,14 @@ class TaskItemBase extends Spine.Controller
     item.metasToArray()
     Mustache.render(@tpl, item)
 
+  destroy: () =>
+    @stack.release()
+    @stack.item.destroy(ajax: !@stack.item.isNew())
+    # Remove task from daily tasks
+    @stack.daily.tasks =
+      (task for task in @stack.daily.tasks when task.id isnt @stack.item.id)
+
+
 class TaskItemShow extends TaskItemBase
   className: 'task-static'
 
@@ -33,13 +41,6 @@ class TaskItemShow extends TaskItemBase
     @stack.edit.active()
     e.stopPropagation()
 
-  destroy: =>
-    @el.remove()
-    @stack.item.destroy()
-    # Remove task from daily tasks
-    @stack.daily.tasks =
-      (task for task in @stack.daily.tasks when task.id isnt @stack.item.id)
-
   stopPropagation: (e) ->
     e.stopPropagation()
 
@@ -49,6 +50,7 @@ class TaskItemEdit extends TaskItemBase
   events:
     'click .add-task-meta': 'addMeta'
     'click .task-save': 'save'
+    'click .task-cancel': 'cancel'
 
   constructor: ->
     super
@@ -85,6 +87,12 @@ class TaskItemEdit extends TaskItemBase
     # Validate should before save, otherwise item validate failed but still saved
     @stack.show.active() if @stack.daily.validate(@stack.item) and @stack.item.save()
 
+  cancel: =>
+    if @stack.item.isNew()
+      @destroy()
+    else
+      @stack.show.active()
+
 class TaskItem extends Spine.Stack
   tag: 'li'
   className: 'task-item'
@@ -103,7 +111,7 @@ class TaskItem extends Spine.Stack
     @listenTo(@item, 'conflict', @markConflict)
     @listenTo @item, 'update', (task) =>
       # FIXME: Why @item.save not update responsed server id to @item?
-      # So manually update item(use .load to update reference item in daily tasks)
+      # So manually update item(use .load to alse update reference item in daily tasks)
       @item.load(task)
       @show.render()
 
