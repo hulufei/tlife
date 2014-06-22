@@ -35,7 +35,7 @@ class App extends Spine.Controller
       (@daily[stamp] = @daily[stamp] or []).push(task)
 
     for stamp, tasks of @daily
-      dailyContainer = $(@template(task))
+      dailyContainer = $(@template(tasks[0]))
       dailyTasks = new DailyTasks(el: dailyContainer.find('.task-list'))
       for task in tasks.sort(DailyTasks.sortByTime)
         dailyTasks.addOne(task)
