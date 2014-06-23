@@ -28,7 +28,7 @@ describe('Task', function() {
   describe('Upload Task', function() {
     it('should reject with invalid token', function(done) {
       request(app)
-        .post('/api/tasks')
+        .post('/t/tasks')
         .set('X-Auth-Token', 'wrong token')
         .expect(401)
         .end(done);
@@ -36,7 +36,7 @@ describe('Task', function() {
 
     it('should reject with empty tasks', function(done) {
       request(app)
-        .post('/api/tasks')
+        .post('/t/tasks')
         .set('X-Auth-Token', token)
         .attach('t', __dirname + '/tasks/empty.t')
         .expect(500)
@@ -48,7 +48,7 @@ describe('Task', function() {
 
     it('should upload a task file', function(done) {
       request(app)
-        .post('/api/tasks')
+        .post('/t/tasks')
         .set('x-auth-token', token)
         .attach('t', __dirname + '/tasks/basic.t')
         .expect(200)
@@ -72,7 +72,7 @@ describe('Task', function() {
 
     it('should upload a task file specify date', function(done) {
       request(app)
-        .post('/api/tasks')
+        .post('/t/tasks')
         .set('x-auth-token', token)
         .attach('t', __dirname + '/tasks/date-specify.t')
         .expect(200)
@@ -96,7 +96,7 @@ describe('Task', function() {
 
     it('should upload multiple task files', function(done) {
       request(app)
-        .post('/api/tasks')
+        .post('/t/tasks')
         .set('x-auth-token', token)
         .attach('t1', __dirname + '/tasks/basic.t')
         .attach('t2', __dirname + '/tasks/date-specify.t')
@@ -143,7 +143,7 @@ describe('Task', function() {
 
     beforeEach(function(done) {
       request(app)
-        .post('/api/tasks')
+        .post('/t/tasks')
         .set('x-auth-token', token)
         .attach('t1', __dirname + '/tasks/basic.t')
         .attach('t', __dirname + '/tasks/2014-2-10.t')
