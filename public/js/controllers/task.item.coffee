@@ -88,10 +88,7 @@ class TaskItemEdit extends TaskItemBase
     @stack.show.active() if @stack.daily.validate(@stack.item) and @stack.item.save()
 
   cancel: =>
-    if @stack.item.isNew()
-      @destroy()
-    else
-      @stack.show.active()
+    if @stack.item.isNew() then @destroy() else @stack.show.active()
 
 class TaskItem extends Spine.Stack
   tag: 'li'
