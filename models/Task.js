@@ -7,7 +7,7 @@ var taskSchema = new Schema({
   metas: {},
   end: { type: String, required: true },
   date: { type: Date, default: Date.now },
-  user: { type: Schema.Types.ObjectId, ref: 'User' }
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 // Transform _id to id, match FrontEnd model schema

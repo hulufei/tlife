@@ -34,6 +34,14 @@ describe('Task', function() {
         .end(done);
     });
 
+    it('should reject with non-exists token', function(done) {
+      request(app)
+        .post('/t/tasks')
+        .set('X-Auth-Token', '537225bf002cfdda04613666')
+        .expect(401)
+        .end(done);
+    });
+
     it('should reject with empty tasks', function(done) {
       request(app)
         .post('/t/tasks')

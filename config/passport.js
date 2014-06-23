@@ -35,7 +35,7 @@ exports.isAuthorized = function(req, res, next) {
   if (token) {
     // Authenticated by token
     User.findById(token, function(err, user) {
-      if (err) return res.send(401);
+      if (err || !user) return res.send(401);
       req.user = user;
       next();
     });
