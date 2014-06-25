@@ -46,6 +46,9 @@ html(lang='en')
           time.task-date(datetime='{{ formatedDate }}') {{ formatedDate }}
           time.task-day {{ day }}
         ul.task-list
+          div.task-views-bar
+            | Views:
+            span.view-unique  U
           li.task-add A
 
     // != js('main')
