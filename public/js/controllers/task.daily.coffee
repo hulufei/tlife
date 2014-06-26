@@ -3,7 +3,7 @@
 class DailyTasks extends Spine.Controller
   events:
     'click .task-add': 'createOne'
-    'click .view-unique': 'toggleUnique'
+    'click .view-unique': 'toggleDup'
 
   @sortByTime: (a, b)->
     if a.end < b.end
@@ -36,7 +36,8 @@ class DailyTasks extends Spine.Controller
 
   # Toggle tasks doing same thing, edit/delete collapsed task will
   # update to all.
-  toggleUnique: =>
+  toggleDup: =>
+    @isUniqueView = not @isUniqueView
     for text in @findDupTexts()
       @el.find('.task-item:contains(' + text + ')')
         .first().find('.task-duration').toggle()

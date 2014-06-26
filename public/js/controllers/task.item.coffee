@@ -66,26 +66,49 @@ class TaskItemEdit extends TaskItemBase
   addMeta: (e) =>
     $(@metaItemTpl).insertBefore(e.target).find('input').val('').first().focus()
 
-  save: (e) =>
-    e.preventDefault()
-    # Reset error
-    @$('.error').removeClass('error')
-    @stack.el.siblings('.conflict').removeClass('conflict')
-    # Update model
-    attrs =
-      start: Task.formatTime(@el.find('[name=start]').val())
-      end: Task.formatTime(@el.find('[name=end]').val())
-      text: @el.find('[name=text]').val()
-      metas: {}
+  inputMetas: ->
+    metas = {}
     @el.find('.task-meta').each ->
       _this = $(this)
       key = $.trim _this.find('[name=metaKey]').val()
       value = $.trim _this.find('[name=metaValue]').val()
       # Ignore meta if key or value is empty
-      attrs.metas[key] = value if key and value
+      metas[key] = value if key and value
+    metas
+
+  updateDup: ->
+    # Expand dup
+    @stack.daily.toggleDup()
+    attrs =
+      text: @el.find('[name=text]').val()
+      metas: @inputMetas()
+    for task in Task.findAllByAttribute('text', @stack.item.text)
+      task.load(attrs)
+      task.save()
+    # Restore to collapsed view
+    @stack.daily.toggleDup()
+
+  save: (e) =>
+    e.preventDefault()
+    # Reset error
+    @$('.error').removeClass('error')
+    @stack.el.siblings('.conflict').removeClass('conflict')
+
+    # Update all collapsed tasks
+    if @stack.daily.isUniqueView
+      @updateDup()
+      return
+
+    # Update model
+    attrs =
+      start: Task.formatTime(@el.find('[name=start]').val())
+      end: Task.formatTime(@el.find('[name=end]').val())
+      text: @el.find('[name=text]').val()
+      metas: @inputMetas()
+
     @stack.item.load(attrs)
     # Validate should before save, otherwise item validate failed but still saved
-    @stack.show.active() if @stack.daily.validate(@stack.item) and @stack.item.save()
+    if @stack.daily.validate(@stack.item) then @stack.item.save()
 
   cancel: =>
     if @stack.item.isNew() then @destroy() else @stack.show.active()
@@ -111,6 +134,7 @@ class TaskItem extends Spine.Stack
       # So manually update item(use .load to alse update reference item in daily tasks)
       @item.load(task)
       @show.render()
+      @show.active()
 
   popError: (task, err) =>
     @log('Task validation failed')
