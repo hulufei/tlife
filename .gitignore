@@ -1,0 +1,8 @@
+.DS_Store
+.nodemonignore
+.sass-cache/
+idea.md
+node_modules/
+public/lib
+test/coverage/
+mongo_data/
